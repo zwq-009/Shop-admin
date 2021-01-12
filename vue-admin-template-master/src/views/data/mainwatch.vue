@@ -2,7 +2,7 @@
   <div class="con">
     <div class="view-content">
       <div id="myChart" :style="{width: '600px', height: '600px'}"></div>
-      <div id="myChart1" :style="{width: '600px', height: '800px'}"></div>
+      //<div id="myChart1" :style="{width: '600px', height: '800px'}"></div>
     </div>
   </div>
 </template>
