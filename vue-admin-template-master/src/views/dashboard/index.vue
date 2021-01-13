@@ -1,47 +1,117 @@
 <template>
-  <div class="con">
-    <div class="view-content">
-      <div id="myChart" :style="{width: '800px', height: '600px'}"></div>
-      <!-- <div id="myChart1" :style="{width: '800px', height: '800px'}"></div> -->
+  <div class="echarts">
+    <div class="dashboard-container">
+      <div class="dashboard-text">
+        <h1
+          v-if="grt=(ho<9?'早上好':
+                    ho<12?'上午好':
+                    ho<15?'中午好':
+                    ho<19?'下午好':
+                    '晚上好'
+                    )"
+        >{{grt}}</h1>
+        尊敬的{{ name }} 祝你新的一天工作愉快
+        
+      </div>
+      <div class="rr">
+        <h3>快捷操作:</h3>
+        <ul>
+          <li>
+            <i class="el-icon-s-platform"></i>订单列表
+          </li>
+          <li>
+            <i class="el-icon-time"></i>待退款
+          </li>
+          <li>
+            <i class="el-icon-thumb"></i>商品上架
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <i class="el-icon-s-platform"></i>数据分析
+          </li>
+          <li>
+            <i class="el-icon-time"></i>个人中心
+          </li>
+          <li>
+            <i class="el-icon-thumb"></i>查询商品分类
+          </li>
+        </ul>
+      </div>
+      <div class="db"></div>
+    </div>
+    <div class="qc"></div>
+    <div class="dp">
+      <p class="p1">全国客户上线数量：</p>
+      <div class="l" :style="{height:'600px',width:'800px'}" ref="myEchart"></div>
+      <div class="r">
+        <h3 style="color:red">商品类目每日访问数量</h3>
+        <div id="myChart3" :style="{width: '600px', height: '600px'}"></div>
+      </div>
     </div>
   </div>
 </template>
-
 <script>
+import { getDataList } from "@/api/data";
+import { mapGetters } from "vuex";
+import { getList } from "@/api/table";
+import echarts from "echarts";
+//   import '../../node_modules/echarts/map/js/world.js'
+import "../../../node_modules/echarts/map/js/china.js"; // 引入中国地图数据
 export default {
   name: "Echarts",
+  props: ["userJson"],
+  computed: {
+    ...mapGetters(["name"]),
+  },
+
+  
   data() {
-    return {};
+    return {
+      chart: null,
+      ho: new Date().getHours(),
+      listt:null,
+    };
+  },
+  created() {
+    this.$axios
+      .get("http://wthrcdn.etouch.cn/weather_mini?city=无锡")
+      .then(function (response) {
+        console.log(response.data.data.forecast,"99999999999999999");
+        this.data.listt.push(response.data.data.forecast)
+        console.log(this.data.list,"2222222222222")
+      })
   },
   mounted() {
-    this.drawLine();
+    this.chinaConfigure();
+    // this.getWeather();
+    this.fetchData();
     this.drawLinee();
   },
+  beforeDestroy() {
+    if (!this.chart) {
+      return;
+    }
+    this.chart.dispose();
+    this.chart = null;
+  },
   methods: {
-    drawLine() {
+    drawLinee() {
       // 基于准备好的dom，初始化echarts实例
-      let myChart = this.$echarts.init(document.getElementById("myChart"));
+      let myChart = this.$echarts.init(document.getElementById("myChart3"));
       // 绘制图表配置
       let option = {
-        title: {
-          text: "堆叠区域图",
-        },
+        // backgroundColor: "#2c343c",
+
         tooltip: {
           trigger: "axis",
           axisPointer: {
-            type: "cross",
-            label: {
-              backgroundColor: "#6a7985",
-            },
+            // 坐标轴指示器，坐标轴触发有效
+            type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
           },
         },
         legend: {
-          data: ["邮件营销", "联盟广告", "视频广告", "直接访问", "搜索引擎"],
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {},
-          },
+          data: ["服饰", "运动鞋", "背包", "配饰"],
         },
         grid: {
           left: "3%",
@@ -52,8 +122,7 @@ export default {
         xAxis: [
           {
             type: "category",
-            boundaryGap: false,
-            data: ["sc", "周二", "周三", "周四", "周五", "周六", "周日"],
+            data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
           },
         ],
         yAxis: [
@@ -63,45 +132,27 @@ export default {
         ],
         series: [
           {
-            name: "邮件营销",
-            type: "line",
-            stack: "总量",
-            areaStyle: {},
-            data: [120, 132, 101, 134, 90, 230, 210],
-          },
-          {
-            name: "联盟广告",
-            type: "line",
-            stack: "总量",
-            areaStyle: {},
-            data: [220, 182, 191, 234, 290, 330, 310],
-          },
-          {
-            name: "视频广告",
-            type: "line",
-            stack: "总量",
-            areaStyle: {},
-            data: [150, 232, 201, 154, 190, 330, 410],
-          },
-          {
-            name: "直接访问",
-            type: "line",
-            stack: "总量",
-            areaStyle: {},
+            name: "服饰",
+            type: "bar",
             data: [320, 332, 301, 334, 390, 330, 320],
           },
           {
-            name: "搜索引擎", 
-            type: "line",
-            stack: "总量",
-            label: {
-              normal: {
-                show: true,
-                position: "top",
-              },
-            },
-            areaStyle: {},
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
+            name: "运动鞋",
+            type: "bar",
+            stack: "广告",
+            data: [120, 132, 101, 134, 90, 230, 210],
+          },
+          {
+            name: "背包",
+            type: "bar",
+            stack: "广告",
+            data: [220, 182, 191, 234, 290, 830, 390],
+          },
+          {
+            name: "配饰",
+            type: "bar",
+            stack: "广告",
+            data: [150, 232, 201, 154, 190, 800, 910],
           },
         ],
       };
@@ -111,67 +162,289 @@ export default {
         window.onresize = function () {
           myChart.resize();
         };
-      }, 200);
+      }, 800);
     },
 
-    drawLinee() {
-      // 基于准备好的dom，初始化echarts实例
-      let myChart = this.$echarts.init(document.getElementById("myChart1"));
-      // 绘制图表配置
-      let option = {
-        tooltip: {
-          trigger: "item",
-          formatter: "{a} <br/>{b}: {c} ({d}%)",
+    fetchData() {
+      this.listLoading = true;
+      getDataList().then((response) => {
+        console.log(response, "xxxxxxxxxxxxxxx");
+        this.list = response.data.items;
+        console.log(this.list);
+        this.listLoading = false;
+      });
+    },
+    getlist() {
+      getList().then((response) => {
+        console.log(response);
+      });
+    },
+    chinaConfigure() {
+      console.log(this.userJson);
+      let myChart = echarts.init(this.$refs.myEchart); //这里是为了获得容器所在位置
+      window.onresize = myChart.resize;
+      myChart.setOption({
+        // 进行相关配置
+        // backgroundColor: "blue",
+        tooltip: {}, // 鼠标移到图里面的浮动提示框
+        dataRange: {
+          show: false,
+          min: 0,
+          max: 10000,
+          text: ["High", "Low"],
+          realtime: true,
+          calculable: true,
+          color: ["orangered", "yellow", "lightskyblue"],
         },
-        legend: {
-          orient: "vertical",
-          left: 10,
-          data: ["直接访问", "邮件营销", "联盟广告", "视频广告", "搜索引擎"],
+        geo: {
+          // 这个是重点配置区
+          map: "china", // 表示中国地图
+          roam: true,
+          label: {
+            normal: {
+              show: true, // 是否显示对应地名
+              textStyle: {
+                color: "rgba(0,0,0,0.4)",
+              },
+            },
+          },
+          itemStyle: {
+            normal: {
+              borderColor: "rgba(0, 0, 0, 0.2)",
+            },
+            emphasis: {
+              areaColor: null,
+              shadowOffsetX: 0,
+              shadowOffsetY: 0,
+              shadowBlur: 20,
+              borderWidth: 0,
+              shadowColor: "rgba(0, 0, 0, 0.5)",
+            },
+          },
         },
         series: [
           {
-            name: "访问来源",
-            type: "pie",
-            radius: ["50%", "70%"],
-            avoidLabelOverlap: false,
-            label: {
-              show: false,
-              position: "center",
-            },
-            emphasis: {
-              label: {
-                show: true,
-                fontSize: "30",
-                fontWeight: "bold",
-              },
-            },
-            labelLine: {
-              show: false,
-            },
+            type: "scatter",
+            coordinateSystem: "geo", // 对应上方配置
+          },
+          {
+            name: "客户上线数量", // 浮动框的标题
+            type: "map",
+            geoIndex: 0,
             data: [
-              { value: 335, name: "直接访问" },
-              { value: 310, name: "邮件营销" },
-              { value: 234, name: "联盟广告" },
-              { value: 135, name: "视频广告" },
-              { value: 1548, name: "搜索引擎" },
+              {
+                name: "北京",
+                value: 599,
+              },
+              {
+                name: "上海",
+                value: 142,
+              },
+              {
+                name: "黑龙江",
+                value: 44,
+              },
+              {
+                name: "深圳",
+                value: 92,
+              },
+              {
+                name: "湖北",
+                value: 810,
+              },
+              {
+                name: "四川",
+                value: 453,
+              },
+              {
+                name: "甘肃",
+                value: 1810,
+              },
+              {
+                name: "河南",
+                value: 2810,
+              },
+              {
+                name: "内蒙古",
+                value: 520,
+              },
+              {
+                name: "山东",
+                value: 9810,
+              },
+              {
+                name: "新疆",
+                value: 660,
+              },
+              {
+                name: "西藏",
+                value: 810,
+              },
+              {
+                name: "云南",
+                value: 1810,
+              },
+              {
+                name: "青海",
+                value: 7810,
+              },
+              {
+                name: "重庆",
+                value: 3810,
+              },
+              {
+                name: "宁夏",
+                value: 7810,
+              },
+              {
+                name: "广西",
+                value: 7810,
+              },
+              {
+                name: "贵州",
+                value: 7810,
+              },
+              {
+                name: "台湾",
+                value: 210,
+              },
+              {
+                name: "江苏",
+                value: 10010,
+              },
+              {
+                name: "浙江",
+                value: 17810,
+              },
+              {
+                name: "陕西",
+                value: 7810,
+              },
+              {
+                name: "山西",
+                value: 5510,
+              },
+              {
+                name: "河北",
+                value: 1810,
+              },
+              {
+                name: "辽宁",
+                value: 810,
+              },
+              {
+                name: "吉林",
+                value: 710,
+              },
+              {
+                name: "安徽",
+                value: 7810,
+              },
+              {
+                name: "广东",
+                value: 7810,
+              },
+              {
+                name: "福建",
+                value: 810,
+              },
+              {
+                name: "江西",
+                value: 910,
+              },
+              {
+                name: "湖南",
+                value: 310,
+              },
+              {
+                name: "海南",
+                value: 3610,
+              },
+              {
+                name: "香港",
+                value: 5510,
+              },
+              {
+                name: "澳门",
+                value: 110,
+              },
+              {
+                name: "天津",
+                value: 410,
+              },
             ],
           },
         ],
-      };
-      // 窗口大小自适应方案
-      myChart.setOption(option);
-      setTimeout(function () {
-        window.onresize = function () {
-          myChart.resize();
-        };
-      }, 200);
+      });
     },
   },
 };
 </script>
-<style scoped>
-.con{
-  background:skyblue;
-  opacity: 0.3;
+
+<style lang="scss" scoped>
+.dp {
+  .p1 {
+    margin-left: 20px;
+    font-weight: 900;
+    color: red;
+  }
+  .l {
+    float: left;
+  }
+  .r {
+    float: left;
+    // margin-left: -65px;
+    ul {
+      margin-right: 20px;
+      display: inline-block;
+      list-style: none;
+      li {
+        border: 1px solid black;
+      }
+    }
+  }
+}
+.rr {
+  float: left;
+  margin-left: 300px;
+  ul {
+    list-style: none;
+    li {
+      display: inline-block;
+      margin-left: 10px;
+      widows: 35px;
+      height: 18px;
+      // background-color: skyblue;
+      cursor: pointer;
+    }
+    li:hover {
+      background-color: skyblue;
+      border-radius: 8px;
+    }
+  }
+}
+.dashboard-text {
+  margin-top: -30px;
+  font-size: 44px;
+  font-weight: 900;
+  float: left;
+  h1 {
+    color: skyblue;
+  }
+}
+.db {
+  float: left;
+}
+.qc {
+  clear: both;
+}
+.dashboard {
+  &-container {
+    margin: 30px;
+  }
+  &-text {
+    font-size: 20px;
+    line-height: 46px;
+  }
 }
 </style>

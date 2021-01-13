@@ -15,6 +15,11 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 import echarts from 'echarts'
+import axios from "axios";
+
+Vue.prototype.$axios = axios;
+
+// console.log(echarts,"88888888888888888888888888888")
 
 
 /**

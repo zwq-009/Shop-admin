@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getDataList(params) {
     return request({
-        url: '/vue-admin-template/product/list',
+        url: '/vue-admin-template/data/mainwatch',
         method: 'get',
         params
     })
