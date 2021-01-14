@@ -71,22 +71,22 @@ export const constantRoutes = [
     ]
   },
   {
-    path:'/ums',
+    path: '/ums',
     component: Layout,
     name: 'ums',
-    meta: {title: '权限管理',icon:'table'},
+    meta: { title: '权限管理', icon: 'ums' },
     children: [
       {
         path: 'list',
         name: 'Product',
         component: () => import('@/views/ums/admin/index'),
-        meta: { title: '商品权限', icon: 'table' }
+        meta: { title: '商品权限', icon: 'ums' }
       },
       {
         path: 'list',
         name: 'Product',
         component: () => import('@/views/ums/admin/index'),
-        meta: { title: '商品权限', icon: 'table' }
+        meta: { title: '商品权限', icon: 'ums' }
       },
     ]
   },
@@ -157,7 +157,19 @@ export const constantRoutes = [
     ]
   },
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  { path: '*', redirect: '/404', hidden: true },
+
+  {
+    path: '/setting',
+    component: Layout,
+    redirect: '/setting/index',
+    children: [{
+      path: 'index',
+      name: 'Setting',
+      component: () => import('@/views/setting/index'),
+      meta: { title: '设置', icon: 'setting' }
+    }]
+  },
 ]
 
 // asyncRouterMap：需要进行权限过滤的页面
@@ -171,7 +183,7 @@ export const asyncRoutes = [
     meta: {
       title: 'Permission',
       icon: 'tree',
-      roles: ['admin','editor'] // you can set roles in root nav
+      roles: ['admin', 'editor'] // you can set roles in root nav
     },
     children: [
       {
@@ -194,6 +206,7 @@ export const asyncRoutes = [
       }
     ]
   }
+
 ]
 
 const createRouter = () => new Router({
