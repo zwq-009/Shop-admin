@@ -225,18 +225,20 @@ const data = {
         }
     ]
 }
+exports.data=data;
 
 export default [
     {
         url: '/vue-admin-template/ums-menu/list',
         type: 'get',
         response: config => {
+            const { page = 1, limit = 5 } = config.query
             const items = data.items
             return {
                 code: 20000,
                 data: {
                     total: items.length,
-                    items: items
+                    items: items.slice((page - 1) * limit, limit * page)
                 }
             }
         }
@@ -274,5 +276,5 @@ export default [
             }
           }
         }
-      }
+      },
 ]

@@ -36,16 +36,28 @@
           </template>
         </el-table-column>
       </el-table>
+      <div class="pagination-container">
+        <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          layout="total, sizes,prev, pager, next,jumper"
+          :current-page.sync="listQuery.page"
+          :page-size="listQuery.limit"
+          :page-sizes="[3,5,10,20]"
+          :total="total"
+        ></el-pagination>
+      </div>
       <el-dialog :visible.sync="dialogVisible" width="40%">
         <el-form :model="menu" ref="roleForm" label-width="150px" size="small">
           <el-form-item label="编号：">
-            <el-input v-model="menu.id" style="width: 250px"></el-input>
+            <el-input v-model="menu.id" style="width: 250px" placeholder="请按照顺序输入相应编号"></el-input>
           </el-form-item>
           <el-form-item label="权限名称：">
-            <el-input v-model="menu.name" style="width: 250px"></el-input>
+            <el-input v-model="menu.name" style="width: 250px" placeholder="请输入权限名称"></el-input>
           </el-form-item>
           <el-form-item label="权限等级：">
-            <el-input v-model="menu.level" style="width: 250px"></el-input>
+            <el-input v-model="menu.level" style="width: 250px" placeholder="请输入0或1或2"></el-input>
           </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -70,7 +82,11 @@ export default {
       list: null,
       total: null,
       listLoading: true,
-      listQuery: {},
+      listQuery: {
+        page: 1,
+        limit: 5,
+        keyword: "",
+      },
       menu: Object.assign({}, defaultMenu),
       dialogVisible: false,
       parentId: 0,
@@ -80,6 +96,15 @@ export default {
     this.getMenuList();
   },
   methods: {
+    handleSizeChange(val) {
+      this.listQuery.page = 1;
+      this.listQuery.limit = val;
+      this.getMenuList();
+    },
+    handleCurrentChange(val) {
+      this.listQuery.page = val;
+      this.getMenuList();
+    },
     async getMenuList() {
       this.listLoading = true;
       const result = await getUmsmenuList(this.listQuery);

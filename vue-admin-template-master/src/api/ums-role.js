@@ -23,3 +23,18 @@ export function deleteRole(params) {
         params
     })
 }
+
+export function listMenuByRole(roleId) {
+    return request({
+        url: '/vue-admin-template/ums-menu/list' + roleId,
+        method: 'get'
+    })
+}
+
+export function allocMenu(data) {
+    return request({
+        url: '/vue-admin-template/ums-menu/new',
+        method: 'post',
+        data: data
+    })
+}

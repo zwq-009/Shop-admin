@@ -5,6 +5,12 @@
         <i class="el-icon-search"></i>
         <span>筛选搜索</span>
         <el-button style="float:right" type="primary" @click="handleSearchList()" size="small">查询搜索</el-button>
+        <el-button
+          style="float:right;margin-right: 15px"
+          @click="handleResetSearch()"
+          size="small">
+          重置
+        </el-button>
       </div>
       <div style="margin-top: 15px">
         <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
@@ -50,12 +56,7 @@
         </el-table-column>
         <el-table-column label="操作" width="220" align="center">
           <template slot-scope="scope">
-            <el-button
-              size="small"
-              type="info"
-              round
-              @click="handleSelectRole(scope.$index, scope.row)"
-            >分配角色</el-button>
+            <el-button size="small" type="info" round @click="dialogFormVisible = true">分配角色</el-button>
             <el-button
               type="primary"
               icon="el-icon-edit"
@@ -71,32 +72,47 @@
           </template>
         </el-table-column>
       </el-table>
-      <pagination
-        v-show="total>1"
-        :total="total"
-        :page.sync="listQuery.page"
-        :limit.sync="listQuery.limit"
-        @pagination="getUmsList"
-      />
+      <div class="pagination-container">
+        <el-pagination
+          background
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          layout="total, sizes,prev, pager, next,jumper"
+          :current-page.sync="listQuery.page"
+          :page-size="listQuery.limit"
+          :page-sizes="[3,5,10]"
+          :total="total"
+        ></el-pagination>
+      </div>
       <el-dialog :title="isEdit?'编辑用户':'添加用户'" :visible.sync="dialogVisible" width="40%">
         <el-form :model="admin" ref="adminForm" label-width="150px" size="small">
           <el-form-item label="编号：">
-            <el-input v-model="admin.id" style="width: 250px"></el-input>
+            <el-input v-model="admin.id" style="width: 250px" placeholder="请按照顺序输入相应编号"></el-input>
           </el-form-item>
           <el-form-item label="帐号：">
-            <el-input v-model="admin.username" style="width: 250px"></el-input>
+            <el-input v-model="admin.username" style="width: 250px" placeholder="请输入帐号"></el-input>
           </el-form-item>
           <el-form-item label="姓名：">
-            <el-input v-model="admin.nickName" style="width: 250px"></el-input>
+            <el-input v-model="admin.nickName" style="width: 250px" placeholder="请输入姓名"></el-input>
           </el-form-item>
           <el-form-item label="邮箱：">
-            <el-input v-model="admin.email" style="width: 250px"></el-input>
+            <el-input v-model="admin.email" style="width: 250px" placeholder="请输入邮箱"></el-input>
           </el-form-item>
           <el-form-item label="密码：">
-            <el-input v-model="admin.password" type="password" style="width: 250px"></el-input>
+            <el-input
+              v-model="admin.password"
+              type="password"
+              style="width: 250px"
+              placeholder="请输入密码"
+            ></el-input>
           </el-form-item>
           <el-form-item label="添加时间：">
-            <el-input v-model="admin.createTime" style="width: 250px"></el-input>
+            <el-input
+              type="date"
+              v-model="admin.createTime"
+              style="width: 250px"
+              placeholder="请输入时间"
+            ></el-input>
           </el-form-item>
           <el-form-item label="是否启用：">
             <el-radio-group v-model="admin.status">
@@ -110,6 +126,24 @@
           <el-button type="primary" @click="handleDialogConfirm()" size="small">确 定</el-button>
         </span>
       </el-dialog>
+      <el-dialog title="分配角色" :visible.sync="dialogFormVisible" width="30%">
+        <el-form :model="admin">
+          <el-form-item label="角色名称">
+            <el-select multiple placeholder="请选择" v-model="value" size="small" style="width: 80%">
+              <el-option label="商品管理员" value="商品管理员"></el-option>
+              <el-option label="订单管理员" value="订单管理员"></el-option>
+              <el-option label="超级管理员" value="超级管理员"></el-option>
+              <el-option label="经理" value="经理"></el-option>
+              <el-option label="Boss" value="Boss"></el-option>
+              <el-option label="普通用户" value="普通用户"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -119,9 +153,8 @@ import {
   deleteUmsadmin,
   updateAdmin,
   createAdmin,
-  updateUmsadmin,
 } from "@/api/ums-admin";
-import Pagination from "@/components/Pagination";
+// import Pagination from "@/components/Pagination";
 const defaultAdmin = {
   id: null,
   username: null,
@@ -131,11 +164,6 @@ const defaultAdmin = {
   createTime: null,
   status: 1,
 };
-const defaultListQuery = {
-    pageNum: 1,
-    pageSize: 3,
-    keyword: null
-  };
 export default {
   name: "adminList",
   data() {
@@ -143,22 +171,36 @@ export default {
       list: [],
       listLoading: true,
       total: 1,
-      listQuery: Object.assign({}, defaultListQuery),
+      listQuery: {
+        page: 1,
+        limit: 3,
+        keyword: "",
+      },
       admin: Object.assign({}, defaultAdmin),
       dialogVisible: false,
       isEdit: false,
-      allocDialogVisible: false,
-      allocRoleIds: [],
-      allRoleList: [],
-      allocAdminId: null,
+      dialogFormVisible: false,
+      value: "",
     };
   },
   created() {
     this.getUmsList();
   },
   methods: {
+    handleResetSearch() {
+        this.listQuery.page = 1;
+      },
     handleSearchList() {
-      this.listQuery.pageNum = 1;
+      this.listQuery.page = 3;
+      this.getUmsList();
+    },
+    handleSizeChange(val) {
+      this.listQuery.page = 1;
+      this.listQuery.limit = val;
+      this.getUmsList();
+    },
+    handleCurrentChange(val) {
+      this.listQuery.page = val;
       this.getUmsList();
     },
     async getUmsList() {
@@ -210,10 +252,24 @@ export default {
         }
       });
     },
-    handleSelectRole() {},
-  },
-  components: {
-    Pagination,
+    handleAllocDialogConfirm() {
+      this.$confirm("是否要确认?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      }).then(() => {
+        let params = new URLSearchParams();
+        params.append("adminId", this.allocAdminId);
+        params.append("roleIds", this.allocRoleIds);
+        allocRole(params).then((response) => {
+          this.$message({
+            message: "分配成功！",
+            type: "success",
+          });
+          this.allocDialogVisible = false;
+        });
+      });
+    },
   },
 };
 </script>

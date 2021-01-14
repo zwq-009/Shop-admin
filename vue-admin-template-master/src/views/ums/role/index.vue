@@ -52,7 +52,7 @@
             <el-input v-model="role.explain" type="textarea" :rows="5" style="width: 250px"></el-input>
           </el-form-item>
           <el-form-item label="添加时间：">
-            <el-input v-model="role.createTime" style="width: 250px"></el-input>
+            <el-input type="date" v-model="role.createTime" style="width: 250px"></el-input>
           </el-form-item>
           <el-form-item label="是否启用：">
             <el-radio-group v-model="role.status">

@@ -23,3 +23,10 @@ export function createMenu(data) {
         data: data
     })
 }
+
+export function fetchTreeList() {
+    return request({
+        url: '/vue-admin-template/ums-menu/list',
+        method: 'get'
+    })
+}
