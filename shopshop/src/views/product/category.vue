@@ -1,35 +1,40 @@
 <template>
   <div class="app-container">
-      1111111111111
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets" style="margin-top: 5px"></i>
       <span style="margin-top: 5px">数据列表</span>
-      <el-button
-        class="btn-add"
-        @click="handleAddProductCate()"
-        size="mini">
+      <el-button class="btn-add" size="mini">
         添加
       </el-button>
     </el-card>
     <div class="table-container">
-      <el-table ref="productCateTable"
-                style="width: 100%"
-                :data="list"
-                v-loading="listLoading" border>
+      <el-table
+        ref="productCateTable"
+        style="width: 100%"
+        :data="list"
+        v-loading="listLoading"
+        border
+      >
         <el-table-column label="编号" width="100" align="center">
-          <!-- <template slot-scope="scope">{{scope.row.id}}</template> -->
+          <template slot-scope="scope">{{ scope.$index+1 }}</template>
         </el-table-column>
-        <el-table-column label="分类名称" align="center">
-          <!-- <template slot-scope="scope">{{scope.row.name}}</template> -->
+        <el-table-column label="预览图" align="center" width="120">
+          <template slot-scope="scope">
+            <img :src="scope.row.img_url" alt="" style="width:65px" >
+          </template>
+        </el-table-column>
+        <el-table-column label="分类名称" align="center" width="150">
+          <template slot-scope="scope">{{ scope.row.title }}</template>
         </el-table-column>
         <el-table-column label="级别" width="100" align="center">
-          <!-- <template slot-scope="scope">{{scope.row.level | levelFilter}}</template> -->
-        </el-table-column>i
+          <template slot-scope="scope">{{scope.row.level}}</template> 
+        </el-table-column
+        >
         <el-table-column label="商品数量" width="100" align="center">
-          <!-- <template slot-scope="scope">{{scope.row.productCount }}</template> -->
+          <template slot-scope="scope">{{ scope.row.productCount }}</template>
         </el-table-column>
-        <el-table-column label="数量单位" width="100" align="center">
-          <!-- <template slot-scope="scope">{{scope.row.productUnit }}</template> -->
+        <el-table-column label="单位" width="80" align="center">
+          <template slot-scope="scope">{{ scope.row.productUnit }}</template>
         </el-table-column>
         <el-table-column label="导航栏" width="100" align="center">
           <template slot-scope="scope">
@@ -37,7 +42,8 @@
               @change="handleNavStatusChange(scope.$index, scope.row)"
               :active-value="1"
               :inactive-value="0"
-              v-model="scope.row.navStatus">
+              v-model="scope.row.navStatus"
+            >
             </el-switch>
           </template>
         </el-table-column>
@@ -47,23 +53,26 @@
               @change="handleShowStatusChange(scope.$index, scope.row)"
               :active-value="1"
               :inactive-value="0"
-              v-model="scope.row.showStatus">
+              v-model="scope.row.showStatus"
+            >
             </el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="排序" width="100" align="center">
-          <!-- <template slot-scope="scope">{{scope.row.sort }}</template> -->
-        </el-table-column>
+        <!-- <el-table-column label="排序" width="100" align="center">
+          <template slot-scope="scope">{{ scope.row.sort }}</template>
+        </el-table-column> -->
         <el-table-column label="设置" width="200" align="center">
           <template slot-scope="scope">
             <el-button
               size="mini"
               :disabled="scope.row.level | disableNextLevel"
-              @click="handleShowNextLevel(scope.$index, scope.row)">查看下级
+              @click="handleShowNextLevel(scope.$index, scope.row)"
+              >查看下级
             </el-button>
             <el-button
               size="mini"
-              @click="handleTransferProduct(scope.$index, scope.row)">转移商品
+              @click="handleTransferProduct(scope.$index, scope.row)"
+              >转移商品
             </el-button>
           </template>
         </el-table-column>
@@ -71,12 +80,14 @@
           <template slot-scope="scope">
             <el-button
               size="mini"
-              @click="handleUpdate(scope.$index, scope.row)">编辑
+              @click="handleUpdate(scope.$index, scope.row)"
+              >编辑
             </el-button>
             <el-button
               size="mini"
               type="danger"
-              @click="handleDelete(scope.$index, scope.row)">删除
+              @click="handleDelete(scope.$index, scope.row)"
+              >删除
             </el-button>
           </template>
         </el-table-column>
@@ -89,24 +100,23 @@
         @current-change="handleCurrentChange"
         layout="total, sizes,prev, pager, next,jumper"
         :page-size="listQuery.pageSize"
-        :page-sizes="[5,10,15]"
+        :page-sizes="[5, 10, 15]"
         :current-page.sync="listQuery.pageNum"
-        :total="total">
+        :total="total"
+      >
       </el-pagination>
-    </div>
+    </div> 
   </div>
 </template>
 
 <script>
-  import {fetchList,deleteProductCate,updateShowStatus,updateNavStatus} from '@/api/productCate'
-
-  export default {
-    name: "productCateList",
-    data() {
+import {getGoodsList} from '@/api/goods'
+export default {
+  data() {
       return {
         list: null,
         total: null,
-        listLoading: true,
+        listLoading: false,
         listQuery: {
           pageNum: 1,
           pageSize: 5
@@ -114,100 +124,21 @@
         parentId: 0
       }
     },
-    created() {
-      this.resetParentId();
-      this.getList();
+  created(){
+    this.getGooList();
+  },
+  methods:{
+    async getGooList(){
+      let result = await getGoodsList();
+      this.list = result.data.items;
+      // console.log(result);
     },
-    watch: {
-      $route(route) {
-        this.resetParentId();
-        this.getList();
-      }
-    },
-    methods: {
-      resetParentId(){
-        this.listQuery.pageNum = 1;
-        if (this.$route.query.parentId != null) {
-          this.parentId = this.$route.query.parentId;
-        } else {
-          this.parentId = 0;
-        }
-      },
-      handleAddProductCate() {
-        this.$router.push('/pms/addProductCate');
-      },
-      getList() {
-        this.listLoading = true;
-        fetchList(this.parentId, this.listQuery).then(response => {
-          this.listLoading = false;
-          this.list = response.data.list;
-          this.total = response.data.total;
-        });
-      },
-      handleSizeChange(val) {
-        this.listQuery.pageNum = 1;
-        this.listQuery.pageSize = val;
-        this.getList();
-      },
-      handleCurrentChange(val) {
-        this.listQuery.pageNum = val;
-        this.getList();
-      },
-      handleNavStatusChange(index, row) {
-        let data = new URLSearchParams();
-        let ids=[];
-        ids.push(row.id)
-        data.append('ids',ids);
-        data.append('navStatus',row.navStatus);
-        updateNavStatus(data).then(response=>{
-          this.$message({
-            message: '修改成功',
-            type: 'success',
-            duration: 1000
-          });
-        });
-      },
-      handleShowStatusChange(index, row) {
-        let data = new URLSearchParams();
-        let ids=[];
-        ids.push(row.id)
-        data.append('ids',ids);
-        data.append('showStatus',row.showStatus);
-        updateShowStatus(data).then(response=>{
-          this.$message({
-            message: '修改成功',
-            type: 'success',
-            duration: 1000
-          });
-        });
-      },
-      handleShowNextLevel(index, row) {
+    handleShowNextLevel(index, row) {
         this.$router.push({path: '/pms/productCate', query: {parentId: row.id}})
       },
-      handleTransferProduct(index, row) {
-        console.log('handleAddProductCate');
-      },
-      handleUpdate(index, row) {
-        this.$router.push({path:'/pms/updateProductCate',query:{id:row.id}});
-      },
-      handleDelete(index, row) {
-        this.$confirm('是否要删除该品牌', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          deleteProductCate(row.id).then(response => {
-            this.$message({
-              message: '删除成功',
-              type: 'success',
-              duration: 1000
-            });
-            this.getList();
-          });
-        });
-      }
-    },
-    filters: {
+  },
+
+  filters: {
       levelFilter(value) {
         if (value === 0) {
           return '一级';
@@ -223,9 +154,10 @@
         }
       }
     }
-  }
+}
 </script>
 
-<style scoped>
-
+<style>
+    
 </style>
+
