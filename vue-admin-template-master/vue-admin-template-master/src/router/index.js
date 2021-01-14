@@ -129,11 +129,29 @@ export const constantRoutes = [
     meta: { title: '订单管理', icon: 'table' },
     children: [
       {
-        path: 'orderlist',
-        name: 'Order',
-        component: () => import('@/views/order/orderlist'),
-        meta: { title: '订单管理', icon: 'table' }
-      }
+        path: 'goodlist',
+        name: 'order',
+        component: () => import('@/views/order/goodlist'),
+        meta: { title: '发货管理', icon: 'form' }
+      },
+      {
+        path: 'returnlist',
+        name: 'order',
+        component: () => import('@/views/order/returnlist'),
+        meta: { title: '退货管理', icon: 'table' }
+      },
+      {
+        path: 'new',
+        component: () => import('@/views/order/new'),
+        meta: { title: '新增商品', icon: 'table' },
+        hidden: true    //不会在菜单栏中显示
+    },
+    {
+      path: 'newnew',
+      component: () => import('@/views/order/new'),
+      meta: { title: '新增商品', icon: 'table' },
+      hidden: true    //不会在菜单栏中显示
+  }
     ]
   },
   {
