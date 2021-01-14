@@ -3,39 +3,54 @@
     <div class="dashboard-container">
       <div class="dashboard-text">
         <h1
-          v-if="grt=(ho<9?'早上好':
+          v-if="grt=(ho<9?'早上好，':
                     ho<12?'上午好':
-                    ho<15?'中午好':
+                    ho<14?'中午好':
                     ho<19?'下午好':
                     '晚上好'
                     )"
         >{{grt}}</h1>
-        尊敬的{{ name }} 祝你新的一天工作愉快
-        
+        尊敬的{{ name }} 祝您新的一天工作愉快
+        <div class="tq" v-if="listt.length">
+          今天是 {{listt[0].date}} {{listt[0].type}} 风向为 {{listt[0].fengxiang}} {{listt[0].high}} 至 {{listt[0].low}}
+          <br />天凉，注意加衣，预防感冒
+        </div>
       </div>
       <div class="rr">
         <h3>快捷操作:</h3>
         <ul>
-          <li>
-            <i class="el-icon-s-platform"></i>订单列表
-          </li>
-          <li>
-            <i class="el-icon-time"></i>待退款
-          </li>
-          <li>
-            <i class="el-icon-thumb"></i>商品上架
-          </li>
+          <router-link :to="{path:'/order'}">
+            <li>
+              <i class="el-icon-s-platform"></i>订单列表
+            </li>
+          </router-link>
+          <router-link :to="{path:'/order'}">
+            <li>
+              <i class="el-icon-time"></i>待退款
+            </li>
+          </router-link>
+          <router-link :to="{path:'/product'}">
+            <li>
+              <i class="el-icon-thumb"></i>商品上架
+            </li>
+          </router-link>
         </ul>
         <ul>
-          <li>
-            <i class="el-icon-s-platform"></i>数据分析
-          </li>
-          <li>
-            <i class="el-icon-time"></i>个人中心
-          </li>
-          <li>
-            <i class="el-icon-thumb"></i>查询商品分类
-          </li>
+          <router-link :to="{path:'/data/mainwatch'}">
+            <li>
+              <i class="el-icon-s-platform"></i>数据分析
+            </li>
+          </router-link>
+          <router-link :to="{path:'/permission'}">
+            <li>
+              <i class="el-icon-time"></i>个人中心
+            </li>
+          </router-link>
+          <router-link :to="{path:'/product'}">
+            <li>
+              <i class="el-icon-thumb"></i>查询商品分类
+            </li>
+          </router-link>
         </ul>
       </div>
       <div class="db"></div>
@@ -65,24 +80,26 @@ export default {
     ...mapGetters(["name"]),
   },
 
-  
   data() {
     return {
       chart: null,
       ho: new Date().getHours(),
-      listt:null,
+      listt: [],
+      list:[]
     };
   },
   created() {
     this.$axios
       .get("http://wthrcdn.etouch.cn/weather_mini?city=无锡")
-      .then(function (response) {
-        console.log(response.data.data.forecast,"99999999999999999");
-        this.data.listt.push(response.data.data.forecast)
-        console.log(this.data.list,"2222222222222")
-      })
+      .then((response) => {
+        console.log(response.data.data.forecast, "99999999999999999");
+        // this.listt.push(response.data.data.forecast)
+        this.listt = response.data.data.forecast;
+        console.log(this.listt, "2222222222222");
+      });
   },
   mounted() {
+    
     this.chinaConfigure();
     // this.getWeather();
     this.fetchData();
@@ -96,6 +113,15 @@ export default {
     this.chart = null;
   },
   methods: {
+    fetchData() {
+      this.listLoading = true;
+      getDataList().then((response) => {
+        console.log(response, "xxxxxxxxxxxxxxx");
+        this.list = response.data.items;
+        console.log(this.list);
+        this.listLoading = false;
+      });
+    },
     drawLinee() {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("myChart3"));
@@ -238,11 +264,11 @@ export default {
               },
               {
                 name: "上海",
-                value: 142,
+                value: 8855,
               },
               {
                 name: "黑龙江",
-                value: 44,
+                value: 8844,
               },
               {
                 name: "深圳",
@@ -430,6 +456,10 @@ export default {
   float: left;
   h1 {
     color: skyblue;
+  }
+  .tq {
+    font-size: 12px;
+    color: gray;
   }
 }
 .db {

@@ -5,7 +5,7 @@ const data = {
     "id": 87,
     "title": "耐克 大童 NIKE AIR FORCE 1 (GS) AF1 运动童鞋",
     "add_time": "2021-1-11 10:00:00",
-    "click": 0,
+    "click": 1000,
     "img_url": "https://img14.360buyimg.com/n5/jfs/t1/134647/40/11261/37251/5f741cc4E54e44a10/d4604c48890771ca.jpg",
     "sell_price": 599,
     "stock_quantity": 60
@@ -14,7 +14,7 @@ const data = {
     "id": 88,
     "title": "耐克 男子 NIKE AIR FORCE 1'07 PRM 运动鞋",
     "add_time": "2021-1-11 10:00:00",
-    "click": 0,
+    "click": 2000,
     "img_url": "https://img11.360buyimg.com/n5/jfs/t1/148992/13/14740/229783/5fb47942Eecd044c5/da1034a874877fb2.png",
     "sell_price": 999,
     "stock_quantity": 200
@@ -22,8 +22,8 @@ const data = {
   {
     "id": 89,
     "title": "耐克 男子 NIKE AIR MAX 270 REACT 运动鞋",
-    "add_time": "2021-1-11 10:00:00",
-    "click": 4,
+    "add_time": [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 333.3],
+    "click": 400,
     "img_url": "https://img10.360buyimg.com/n5/jfs/t1/110508/12/10754/51324/5e82b5ebE0f6e8041/58dd765687e4449f.jpg",
     "sell_price": 759,
     "stock_quantity": 60
@@ -32,7 +32,7 @@ const data = {
     "id": 90,
     "title": "耐克 女子 NIKE AIR MAX 2090 运动鞋",
     "add_time": "2021-1-11 10:00:00",
-    "click": 1,
+    "click": 1621,
     "img_url": "https://img10.360buyimg.com/n5/jfs/t1/151773/23/6389/271559/5fb5cb7eE4c1c91e9/ac6ce77f8ed98c37.png",
     "sell_price": 1099,
     "stock_quantity": 103
@@ -307,6 +307,24 @@ const data = {
     "title": " Vans解构一脚蹬小香风男鞋女鞋Slip-On低帮休闲鞋",
     "add_time": "2021-1-11 10:00:00",
     "click": 0,
+    "img_url": "https://img12.360buyimg.com/n5/jfs/t1/130611/37/13093/86948/5f8e4801E59c58cd4/58d4223a98ebf33d.jpg",
+    "sell_price": 665,
+    "stock_quantity": 23
+  },
+  {
+    "id": 119,
+    "title": " Vans解构一脚蹬小香风男鞋女鞋Slip-On低帮休闲鞋",
+    "add_time": "2021-1-11 10:00:00",
+    "click": 58000,
+    "img_url": "https://img12.360buyimg.com/n5/jfs/t1/130611/37/13093/86948/5f8e4801E59c58cd4/58d4223a98ebf33d.jpg",
+    "sell_price": 665,
+    "stock_quantity": 23
+  },
+  {
+    "id": 119,
+    "title": " Vans解构一脚蹬小香风男鞋女鞋Slip-On低帮休闲鞋",
+    "add_time": "2021-1-11 10:00:00",
+    "click": [220, 182, 191, 234, 290, 330, 310],
     "img_url": "https://img12.360buyimg.com/n5/jfs/t1/130611/37/13093/86948/5f8e4801E59c58cd4/58d4223a98ebf33d.jpg",
     "sell_price": 665,
     "stock_quantity": 23
