@@ -5,12 +5,16 @@ import user from './user'
 import table from './table'
 import product from './product'
 import umsadmin from './ums-admin'
+import umsrole from './ums-role'
+import umsmenu from './ums-menu'
 
 const mocks = [
   ...user,
   ...table,
   ...product,
-  ...umsadmin
+  ...umsadmin,
+  ...umsrole,
+  ...umsmenu
 ]
 
 // for front mock

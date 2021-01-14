@@ -31,3 +31,4 @@ export function updateAdmin(id, data) {
         data: data
     })
 }
+

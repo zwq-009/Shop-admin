@@ -73,22 +73,41 @@ export const constantRoutes = [
         component: () => import('@/views/product/new'),
         meta: { title: '新增商品', icon: 'table' },
         hidden: true
-      }
+      },
+      
+
     ]
   },
   {
     path:'/ums',
-    path:'/ums',
     component: Layout,
     redirect: '/ums/admin',
-    name: 'ums',
-    meta: {title: '权限', icon: 'ums'},
+    meta: {title: '用户权限', icon: 'ums'},
     children:[
       {
         path: 'admin',
         name: 'admin',
         component: () => import('@/views/ums/admin/index'),
         meta: {title: '用户列表', icon: 'ums-admin'}
+      },
+      {
+        path: 'role',
+        name: 'role',
+        component: () => import('@/views/ums/role/index'),
+        meta: {title: '角色列表', icon: 'ums-role'}
+      },
+      {
+        path: 'allocMenu',
+        name: 'allocMenu',
+        component: () => import('@/views/ums/role/allocMenu'),
+        meta: {title: '分配权限'},
+        hidden: true
+      },
+      {
+        path: 'menu',
+        name: 'menu',
+        component: () => import('@/views/ums/menu/index'),
+        meta: {title: '权限列表', icon: 'ums-menu'}
       },
     ]
   },

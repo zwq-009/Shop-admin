@@ -1,5 +1,19 @@
 <template>
   <div class="app-container">
+    <el-card class="filter-container" shadow="never">
+      <div>
+        <i class="el-icon-search"></i>
+        <span>筛选搜索</span>
+        <el-button style="float:right" type="primary" @click="handleSearchList()" size="small">查询搜索</el-button>
+      </div>
+      <div style="margin-top: 15px">
+        <el-form :inline="true" :model="listQuery" size="small" label-width="140px">
+          <el-form-item label="输入搜索：">
+            <el-input v-model="listQuery.keyword" placeholder="帐号/姓名" clearable></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
+    </el-card>
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets"></i>
       <span>用户列表添加</span>
@@ -29,20 +43,31 @@
         <el-table-column label="添加时间" width="160" align="center">
           <template slot-scope="scope">{{scope.row.createTime}}</template>
         </el-table-column>
-        <el-table-column label="是否启用" width="140" align="center">
+        <el-table-column label="是否启用" width="100" align="center">
           <template slot-scope="scope">
-            <el-switch
-              @change="handleStatusChange(scope.$index, scope.row)"
-              :active-value="1"
-              :inactive-value="0"
-              v-model="scope.row.status"
-            ></el-switch>
+            <el-switch :active-value="1" :inactive-value="0" v-model="scope.row.status"></el-switch>
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="180" align="center">
+        <el-table-column label="操作" width="220" align="center">
           <template slot-scope="scope">
-            <el-button size="mini" type="text" @click="handleUpdate(scope.$index, scope.row)">编辑</el-button>
-            <el-button size="mini" type="text" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            <el-button
+              size="small"
+              type="info"
+              round
+              @click="handleSelectRole(scope.$index, scope.row)"
+            >分配角色</el-button>
+            <el-button
+              type="primary"
+              icon="el-icon-edit"
+              circle
+              @click="handleUpdate(scope.$index, scope.row)"
+            ></el-button>
+            <el-button
+              type="danger"
+              icon="el-icon-delete"
+              circle
+              @click="handleDelete(scope.$index, scope.row)"
+            ></el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -94,6 +119,7 @@ import {
   deleteUmsadmin,
   updateAdmin,
   createAdmin,
+  updateUmsadmin,
 } from "@/api/ums-admin";
 import Pagination from "@/components/Pagination";
 const defaultAdmin = {
@@ -105,6 +131,11 @@ const defaultAdmin = {
   createTime: null,
   status: 1,
 };
+const defaultListQuery = {
+    pageNum: 1,
+    pageSize: 3,
+    keyword: null
+  };
 export default {
   name: "adminList",
   data() {
@@ -112,19 +143,24 @@ export default {
       list: [],
       listLoading: true,
       total: 1,
-      listQuery: {
-        page: 1,
-        limit: 3,
-      },
+      listQuery: Object.assign({}, defaultListQuery),
       admin: Object.assign({}, defaultAdmin),
       dialogVisible: false,
       isEdit: false,
+      allocDialogVisible: false,
+      allocRoleIds: [],
+      allRoleList: [],
+      allocAdminId: null,
     };
   },
   created() {
     this.getUmsList();
   },
   methods: {
+    handleSearchList() {
+      this.listQuery.pageNum = 1;
+      this.getUmsList();
+    },
     async getUmsList() {
       this.listLoading = true;
       const result = await getUmsadminList(this.listQuery);
@@ -133,9 +169,8 @@ export default {
       this.listLoading = false;
     },
     async handleDelete(index, row) {
-      //调用deleteProduct来向服务器发送请求删除商品
       const result = await deleteUmsadmin({ id: row.id });
-      //商品删除成功重新调用getProList来获取商品列表数据
+      //商品删除成功重新调getUmsList用来获取商品列表数据
       this.getUmsList();
     },
     handleAdd() {
@@ -175,6 +210,7 @@ export default {
         }
       });
     },
+    handleSelectRole() {},
   },
   components: {
     Pagination,

@@ -9,6 +9,7 @@ const data = {
             "password":"123456",
             "email": "test@qq.com",
             "createTime": "2021-01-12",
+            "status":1,
         },
         {
             "id": 2,
@@ -17,6 +18,7 @@ const data = {
             "password":"456456",
             "email": "admin@163.com",
             "createTime": "2021-01-13",
+            "status":1,
         },
         {
             "id": 3,
@@ -25,6 +27,7 @@ const data = {
             "password":"456456",
             "email": "editor@163.com",
             "createTime": "2021-01-13",
+            "status":1
         },
         {
             "id": 4,
@@ -33,6 +36,7 @@ const data = {
             "password":"macro123",
             "email": "macro@qq.com",
             "createTime": "2021-01-13",
+            "status":1
         },
         {
             "id": 5,
@@ -41,6 +45,7 @@ const data = {
             "password":"123123",
             "email": "superAdmin@qq.com",
             "createTime": "2021-01-15",
+            "status":1
         },
         {
             "id": 6,
@@ -49,6 +54,7 @@ const data = {
             "password":"123123",
             "email": "product@qq.com",
             "createTime": "2021-01-15",
+            "status":1
         },
         {
             "id": 7,
@@ -57,6 +63,7 @@ const data = {
             "password":"123123",
             "email": "order@qq.com",
             "createTime": "2021-01-15",
+            "status":1
         },
         {
             "id": 8,
@@ -65,6 +72,7 @@ const data = {
             "password":"987654",
             "email": "manage@qq.com",
             "createTime": "2021-01-17",
+            "status":1
         },
         {
             "id": 9,
@@ -73,6 +81,7 @@ const data = {
             "password":"987654",
             "email": "boss@qq.com",
             "createTime": "2021-01-17",
+            "status":1
         }
     ]
 }
