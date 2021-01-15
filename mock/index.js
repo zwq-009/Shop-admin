@@ -11,6 +11,8 @@ import umsmenu from './ums-menu'
 import goods from './goods'
 import order from './order'
 import returnlist from './returnlist'
+import data from './data'
+import tu from './tu'
 
 
 const mocks = [
@@ -23,7 +25,9 @@ const mocks = [
   ...umsmenu,
   ...goods,
   ...order,
-  ...returnlist
+  ...returnlist,
+  ...data,
+  ...tu
 ]
 
 // for front mock

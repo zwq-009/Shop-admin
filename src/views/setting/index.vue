@@ -22,16 +22,14 @@
     </div>
     <div class="roukey">
       <p class="rotop"><b>页面快捷跳转</b></p>
-      <router-link to="/ums/list">
-        <el-button class="roky">权限管理</el-button>
+      <router-link to="/ums/admin">
+        <el-button class="roky">用户权限</el-button>
       </router-link>
-      <router-link to="/example/table">
-        <el-button class="roky">用户列表</el-button>
-      </router-link>
+
       <router-link to="/product/list">
         <el-button class="roky">商品管理</el-button>
       </router-link>
-      <router-link to="/order/orderlist">
+      <router-link to="/order/goodlist">
         <el-button class="roky">订单管理</el-button>
       </router-link>
       <router-link to="/data/mainwatch">

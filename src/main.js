@@ -14,6 +14,10 @@ import router from './router'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+import echarts from 'echarts'
+import axios from "axios";
+
+Vue.prototype.$axios = axios;
 
 /**
  * If you don't want to use mock-server
@@ -34,6 +38,8 @@ Vue.use(ElementUI, { locale })
 // Vue.use(ElementUI)
 
 Vue.config.productionTip = false
+
+Vue.prototype.$echarts = echarts
 
 new Vue({
   el: '#app',
