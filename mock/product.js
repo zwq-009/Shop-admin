@@ -321,12 +321,13 @@ export default [
     type: 'get',
     response: config => {
       // 获取分页信息
-      const { page = 1, limit = 4 } = config.query
+      const { page = 1, limit = 100 } = config.query
       const items = data.items
       return {
         code: 20000,
         data: {
           total: items.length,
+          //根据分页信息返回数据
           items: items.slice((page - 1) * limit, limit * page)
         }
       }
@@ -338,7 +339,7 @@ export default [
     type: 'post',
     response: config => {
       var product = config.body;
-      // console.log(product, "99999999999999999999999999")
+      console.log(product, "99999999999999999999999999")
       data.items.push(product);
       return {
         code: 20000,
@@ -347,6 +348,26 @@ export default [
         }
       }
     }
-  }
-
+  },
+  // 删除商品
+  {
+    url: '/vue-admin-template/product/delete',
+    type: 'get',
+    response: config => {
+      var id = config.query.id;
+      const items = data.items
+      var index = items.findIndex(item => {
+        if (item.id == id) {
+          return true;
+        }
+      })
+      items.splice(index, 1);
+      return {
+        code: 20000,
+        data: {
+          message: "删除商品成功"
+        }
+      }
+    }
+  },
 ]

@@ -3,8 +3,18 @@
     <el-card>
       <el-row :gutter="20">
         <el-col :span="8">
-          <el-input placeholder="请输入内容" v-model="input" clearable>
-            <el-button slot="append" icon="el-icon-search"></el-button>
+          <el-input
+            placeholder="请输入内容"
+            v-model="listQuery.query"
+            clearable
+          >
+            <el-button
+              slot="append"
+              icon="el-icon-search"
+              @click="
+                fetchData;
+              "
+            ></el-button>
           </el-input>
         </el-col>
         <!-- 路由跳转到新增商品页面 -->
@@ -30,7 +40,7 @@
         <el-table-column
           class-name="status-col"
           label="图片"
-          width="105"
+          width="106"
           align="center"
         >
           <template slot-scope="scope">
@@ -50,7 +60,7 @@
         <el-table-column align="center" label="售价(元)" width="150">
           <template slot-scope="scope">{{ scope.row.sell_price }}</template>
         </el-table-column>
-        <el-table-column label="操作" width="190px" align="center">
+        <el-table-column label="操作" width="200px" align="center">
           <template v-slot="scope">
             <el-button
               size="mini"
@@ -61,7 +71,7 @@
               size="mini"
               type="warning"
               icon="el-icon-delete"
-              @click="removeById(scope.row.id)"
+              @click="removeById(scope.$index, scope.row)"
             ></el-button>
           </template>
         </el-table-column>
@@ -72,64 +82,62 @@
         :total="total"
         :page.sync="listQuery.page"
         :limit.sync="listQuery.limit"
-        @pagination="getList"
+        @pagination="fetchData"
       />
     </el-card>
   </div>
 </template>
 
 <script>
-import { getProductList } from "@/api/product";
+import { getProductList, deleteProduct } from "@/api/product";
+// 引入分页组件
 import Pagination from "@/components/Pagination";
 export default {
   data() {
     return {
       list: [],
       listLoading: true,
-      input: "",
       total: 0,
+      //分页选项
+      listQuery: {
+        query: "",
+        page: 1,
+        limit: 4,
+      },
     };
   },
   created() {
-    this.getProList();
+    this.fetchData();
   },
   components: {
     Pagination,
   },
   methods: {
-    async getProList() {
+    fetchData() {
       this.listLoading = true;
-      let result = await getProductList();
-      this.list = result.data.items;
-      this.total = result.data.total;
-      this.listLoading = false;
-      // console.log(result);
+      getProductList(this.listQuery).then((response) => {
+        this.list = response.data.items;
+        //保存总数据个数
+        this.total = response.data.total;
+        this.listLoading = false;
+      });
     },
-    // 处理分页
-    handleSizeChange(newSize) {
-      this.queryInfo.pagesize = newSize;
-      this.getProList();
-    },
-    handleCurrentChange(newPage) {
-      this.queryInfo.pagenum = newPage;
-      this.getProList();
-    },
+    // 查询商品
+    
     // 删除商品操作
-    removeById(id) {
+    removeById(index, item) {
       this.$confirm("此操作将永久删除该商品, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(async () => {
-          const { data } = await this.$http.delete(`goods/${id}`);
-          if (data.meta.status !== 200) {
-            return this.$message.error(data.meta.msg);
-          }
-          this.getGoodsList();
-          this.$message({
-            type: "success",
-            message: "删除成功!",
+          deleteProduct({ id: item.id }).then((response) => {
+            this.fetchData();
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
           });
         })
         .catch(() => {

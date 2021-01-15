@@ -16,3 +16,11 @@ export function addProduct(params) {
         data: params
     })
 }
+
+export function deleteProduct(params) {
+    return request({
+        url: '/vue-admin-template/product/delete/',
+        method: 'get',
+        params
+    })
+}
