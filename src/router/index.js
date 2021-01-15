@@ -75,6 +75,7 @@ export const constantRoutes = [
     component: Layout,
     name: 'ums',
     meta: { title: '权限管理', icon: 'ums' },
+
     children: [
       {
         path: 'list',
@@ -87,6 +88,7 @@ export const constantRoutes = [
         name: 'Product',
         component: () => import('@/views/ums/admin/index'),
         meta: { title: '商品权限', icon: 'ums' }
+
       },
     ]
   },
@@ -193,6 +195,7 @@ export const constantRoutes = [
       meta: { title: '个人界面', icon: 'setting' }
     }]
   },
+
 ]
 
 // asyncRouterMap：需要进行权限过滤的页面
@@ -229,7 +232,6 @@ export const asyncRoutes = [
       }
     ]
   }
-
 ]
 
 const createRouter = () => new Router({
