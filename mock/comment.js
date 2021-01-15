@@ -120,12 +120,14 @@ export default [
     url: '/vue-admin-template/comment/list',
     type: 'get',
     response: config => {
+      //获取分页信息
+      const {page = 1, limit = 5} = config.query
       const items = data.items
       return {
         code: 20000,
         data: {
           total: items.length,
-          items: items
+          items: items.slice((page-1)*limit,limit*page)
         }
       }
     }

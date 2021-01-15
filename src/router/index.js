@@ -71,24 +71,35 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/ums',
+    path:'/ums',
     component: Layout,
-    name: 'ums',
-    meta: { title: '权限管理', icon: 'ums' },
-
-    children: [
+    redirect: '/ums/admin',
+    meta: {title: '用户权限', icon: 'ums'},
+    children:[
       {
-        path: 'list',
-        name: 'Product',
+        path: 'admin',
+        name: 'admin',
         component: () => import('@/views/ums/admin/index'),
-        meta: { title: '商品权限', icon: 'ums' }
+        meta: {title: '用户列表', icon: 'ums-admin'}
       },
       {
-        path: 'list',
-        name: 'Product',
-        component: () => import('@/views/ums/admin/index'),
-        meta: { title: '商品权限', icon: 'ums' }
-
+        path: 'role',
+        name: 'role',
+        component: () => import('@/views/ums/role/index'),
+        meta: {title: '角色列表', icon: 'ums-role'}
+      },
+      {
+        path: 'allocMenu',
+        name: 'allocMenu',
+        component: () => import('@/views/ums/role/allocMenu'),
+        meta: {title: '分配权限'},
+        hidden: true
+      },
+      {
+        path: 'menu',
+        name: 'menu',
+        component: () => import('@/views/ums/menu/index'),
+        meta: {title: '权限列表', icon: 'ums-menu'}
       },
     ]
   },
@@ -96,7 +107,7 @@ export const constantRoutes = [
     path: '/product',
     component: Layout,
     name: 'product',
-    meta: { title: '商品管理', icon: 'eye' },
+    meta: { title: '商品管理', icon: 'table' },
     children: [
       {
         path: 'list',
@@ -128,14 +139,46 @@ export const constantRoutes = [
     path: '/order',
     component: Layout,
     name: 'order',
-    meta: { title: '订单管理', icon: 'table' },
-    children: [
+    meta: {
+      title: '订单管理',
+      icon: 'table'
+    },
+    children: [{
+        path: 'goodlist',
+        name: 'order',
+        component: () => import('@/views/order/goodlist'),
+        meta: {
+          title: '发货管理',
+          icon: 'form'
+        }
+      },
       {
-        path: 'orderlist',
-        name: 'Order',
-        component: () => import('@/views/order/orderlist'),
-        meta: { title: '订单列表', icon: 'table' }
-      }
+        path: 'returnlist',
+        name: 'order',
+        component: () => import('@/views/order/returnlist'),
+        meta: {
+          title: '退货管理',
+          icon: 'table'
+        }
+      },
+      {
+        path: 'new',
+        component: () => import('@/views/order/new'),
+        meta: {
+          title: '新增商品',
+          icon: 'table'
+        },
+        hidden: true //不会在菜单栏中显示
+      },
+      {
+        path: 'newnew',
+        component: () => import('@/views/order/newnew'),
+        meta: {
+          title: '新增商品',
+          icon: 'table'
+        },
+        hidden: true //不会在菜单栏中显示
+      },
     ]
   },
   {
