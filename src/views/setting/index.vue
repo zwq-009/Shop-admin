@@ -69,9 +69,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-* {
-}
-
 .tage {
   border: 0;
   font-size: 15px;

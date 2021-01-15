@@ -39,7 +39,14 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/401',
+    name:'401',
+    component: () => import('@/views/401'),
+    hidden: true
+  },
+  {
     path: '/404',
+    name:'404',
     component: () => import('@/views/404'),
     hidden: true
   },
@@ -125,16 +132,14 @@ export const constantRoutes = [
     component: Layout,
     name: 'order',
     meta: {
-      title: '订单管理',
-      icon: 'table'
+      title: '订单管理',icon: 'table'
     },
     children: [{
         path: 'goodlist',
         name: 'order',
         component: () => import('@/views/order/goodlist'),
         meta: {
-          title: '发货管理',
-          icon: 'form'
+          title: '发货管理',icon: 'form'
         }
       },
       {
@@ -142,8 +147,7 @@ export const constantRoutes = [
         name: 'order',
         component: () => import('@/views/order/returnlist'),
         meta: {
-          title: '退货管理',
-          icon: 'table'
+          title: '退货管理',icon: 'table'
         }
       },
       {
@@ -154,6 +158,17 @@ export const constantRoutes = [
           icon: 'table'
         },
         hidden: true //不会在菜单栏中显示
+      },
+      {
+        path: 'pay',
+        name: 'Pay',
+        component: () => import('@/views/order/pay/index'),
+        meta: {
+          title: '支付',
+          noKeepAlive: true,
+          icon: 'table'
+        },
+        // children: null,
       },
       {
         path: 'newnew',
