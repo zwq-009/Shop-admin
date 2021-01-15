@@ -3,104 +3,6 @@
     <el-card class="operate-container" shadow="never">
       <i class="el-icon-tickets" style="margin-top: 5px"></i>
       <span style="margin-top: 5px">数据列表</span>
-      <el-button
-        class="btn-add"
-        @click="handleAddProductCate()"
-        size="mini">
-        添加
-      </el-button>
-    </el-card>
-    <div class="table-container">
-      <el-table
-        ref="productAttrCateTable"
-        style="width: 100%"
-        :data="list"
-        v-loading="listLoading"
-        border
-      >
-        <el-table-column label="编号" width="100" align="center">
-          <template slot-scope="scope">{{ scope.row.id }}</template>
-        </el-table-column>
-        <el-table-column label="类型名称" align="center">
-          <template slot-scope="scope">{{ scope.row.name }}</template>
-        </el-table-column>
-        <el-table-column label="属性数量" width="200" align="center">
-          <template slot-scope="scope">{{
-            scope.row.attributeCount == null ? 0 : scope.row.attributeCount
-          }}</template>
-        </el-table-column>
-        <el-table-column label="参数数量" width="200" align="center">
-          <template slot-scope="scope">{{
-            scope.row.paramCount == null ? 0 : scope.row.paramCount
-          }}</template>
-        </el-table-column>
-        <el-table-column label="设置" width="200" align="center">
-          <template slot-scope="scope">
-            <el-button size="mini" @click="getAttrList(scope.$index, scope.row)"
-              >属性列表
-            </el-button>
-            <el-button
-              size="mini"
-              @click="getParamList(scope.$index, scope.row)"
-              >参数列表
-            </el-button>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="200" align="center">
-          <template slot-scope="scope">
-            <el-button
-              size="mini"
-              @click="handleUpdate(scope.$index, scope.row)"
-              >编辑
-            </el-button>
-            <el-button
-              size="mini"
-              type="danger"
-              @click="handleDelete(scope.$index, scope.row)"
-              >删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <div class="pagination-container">
-      <el-pagination
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        layout="total, sizes,prev, pager, next,jumper"
-        :page-size="listQuery.pageSize"
-        :page-sizes="[5, 10, 15]"
-        :current-page.sync="listQuery.pageNum"
-        :total="total"
-      >
-      </el-pagination>
-    </div>
-  </div>
-</template>
-
-<script>
-  /* import { getGoodsList, getDelete } from "@/api/goods"; */
-export default {
-  data() {
-    return {
-      list: null,
-      total: null,
-      listLoading: false,
-      listQuery: {
-        pageNum: 1,
-        pageSize: 5
-      },
-      parentId: 0
-    };
-  }
-}
-</script>
-<!--<template>
-  <div class="app-container">
-    <el-card class="operate-container" shadow="never">
-      <i class="el-icon-tickets" style="margin-top: 5px"></i>
-      <span style="margin-top: 5px">数据列表</span>
       <el-button class="btn-add" @click="addProductAttrCate()" size="mini">
         添加
       </el-button>
@@ -194,7 +96,6 @@ export default {
     </el-dialog>
   </div>
 </template>
-
 <script>
 import {
   fetchList,
@@ -321,4 +222,4 @@ export default {
   }
 };
 </script>
-<style rel="stylesheet/scss" lang="scss" scoped></style>-->
+<style rel="stylesheet/scss" lang="scss" scoped></style>

@@ -68,7 +68,11 @@
               >
             </span>
           </el-dialog>
-          <el-button size="mini" type="danger" @click="dialogVisible = true"
+          <el-button
+            class="btnrpl"
+            size="mini"
+            type="danger"
+            @click="dialogVisible = true"
             >回复</el-button
           >
           <el-button
@@ -80,27 +84,44 @@
         </template>
       </el-table-column>
     </el-table>
+    <pagination
+      v-show="total > 0"
+      :total="total"
+      :page.sync="listQuery.page"
+      :limit.sync="listQuery.limit"
+      @pagination="fetchData"
+    />
   </div>
 </template>
 
 <script>
 import { getProductList, deleteProduct } from "@/api/comment";
+import Pagination from "@/components/Pagination";
 export default {
+  components: { Pagination },
   data() {
     return {
       list: [],
       listLoading: true,
       dialogVisible: false,
+      total: 0,
+      //分页选项
+      listQuery: {
+        page: 1,
+        limit: 3,
+      },
     };
   },
   created() {
     this.getProList();
+    this.fetchData();
   },
   methods: {
     async getProList() {
       this.listLoading = true;
-      let result = await getProductList();
+      let result = await getProductList(this.listQuery);
       this.list = result.data.items;
+      this.total = result.data.total;
       this.listLoading = false;
       // console.log(result);
     },
@@ -109,6 +130,15 @@ export default {
       const result = await deleteProduct({ id: row.id });
       //商品删除成功重新调用getProList来获取商品列表数据
       this.getProList();
+    },
+    fetchData() {
+      this.listLoading = true;
+      getProductList(this.listQuery).then((response) => {
+        this.list = response.data.items;
+        //保存总数据个数
+        this.total = response.data.total;
+        this.listLoading = false;
+      });
     },
   },
 };
