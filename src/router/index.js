@@ -156,18 +156,41 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/comment',
+    component: Layout,
+    name: 'comment',
+    alwaysShow: true,
+    meta: { title: '留言管理', icon: 'comment' },
+    children: [
+      {
+        path: 'index',
+        name: 'Comment',
+        component: () => import('@/views/comment/index'),
+        meta: { title: '评论', icon: 'comrep' }
+      },
+      {
+        path: 'new',
+        component: () => import('@/views/comment/reply'),
+        meta: { title: '回复', icon: 'form' },
+        hidden: true
+      },
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true },
 
   {
     path: '/setting',
     component: Layout,
+    alwaysShow: true,
     redirect: '/setting/index',
+    meta: { title: '系统设置', icon: 'setting' },
     children: [{
       path: 'index',
       name: 'Setting',
       component: () => import('@/views/setting/index'),
-      meta: { title: '设置', icon: 'setting' }
+      meta: { title: '个人界面', icon: 'setting' }
     }]
   },
 ]
