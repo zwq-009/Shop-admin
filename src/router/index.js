@@ -39,7 +39,14 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/401',
+    name:'401',
+    component: () => import('@/views/401'),
+    hidden: true
+  },
+  {
     path: '/404',
+    name:'404',
     component: () => import('@/views/404'),
     hidden: true
   },
@@ -124,19 +131,52 @@ export const constantRoutes = [
       }
     ]
   },
+  // {
+  //   path: '/order',
+  //   component: Layout,
+  //   name: 'order',
+  //   meta: { title: '订单管理', icon: 'table' },
+  //   children: [
+  //     {
+  //       path: 'orderlist',
+  //       name: 'Order',
+  //       component: () => import('@/views/order/orderlist'),
+  //       meta: { title: '订单列表', icon: 'table' }
+  //     }
+  //   ]
+  // },
   {
     path: '/order',
     component: Layout,
-    name: 'order',
-    meta: { title: '订单管理', icon: 'table' },
+    redirect: 'noRedirect',
+    name: 'Order',
+    meta: {
+      title: '订单管理',
+      icon: 'table',
+      permissions: ['admin'],
+    },
+
     children: [
       {
-        path: 'orderlist',
-        name: 'Order',
-        component: () => import('@/views/order/orderlist'),
-        meta: { title: '订单列表', icon: 'table' }
-      }
-    ]
+        path: 'orderList',
+        name: 'OrderList',
+        component: () => import('@/views/order/orderList/index'),
+        meta: {
+          title: '订单列表',
+        },
+      },
+      {
+        path: 'pay',
+        name: 'Pay',
+        component: () => import('@/views/order/pay/index'),
+        meta: {
+          title: '支付',
+          noKeepAlive: true,
+        },
+        // children: null,
+      },
+      
+    ],
   },
   {
     path: '/data',
