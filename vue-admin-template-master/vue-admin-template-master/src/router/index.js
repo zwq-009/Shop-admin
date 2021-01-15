@@ -32,8 +32,7 @@ import Layout from '@/layout'
  */
 
 // constantRouterMap：主要是通用部分，每个用户都有的页面
-export const constantRoutes = [
-  {
+export const constantRoutes = [{
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
@@ -52,7 +51,10 @@ export const constantRoutes = [
       name: 'Dashboard',
       hidden: true,
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: {
+        title: 'Dashboard',
+        icon: 'dashboard'
+      }
     }]
   },
   {
@@ -60,33 +62,45 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/example/table',
     name: '用户管理',
-    meta: { title: '用户管理', icon: 'example' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: '用户列表', icon: 'table' }
+    meta: {
+      title: '用户管理',
+      icon: 'example'
+    },
+    children: [{
+      path: 'table',
+      name: 'Table',
+      component: () => import('@/views/table/index'),
+      meta: {
+        title: '用户列表',
+        icon: 'table'
       }
-    ]
+    }]
   },
   {
-    path:'/ums',
+    path: '/ums',
     component: Layout,
     name: 'ums',
-    meta: {title: '权限管理',icon:'table'},
-    children: [
-      {
+    meta: {
+      title: '权限管理',
+      icon: 'table'
+    },
+    children: [{
         path: 'list',
         name: 'Product',
         component: () => import('@/views/ums/admin/index'),
-        meta: { title: '商品权限', icon: 'table' }
+        meta: {
+          title: '商品权限',
+          icon: 'table'
+        }
       },
       {
         path: 'list',
         name: 'Product',
         component: () => import('@/views/ums/admin/index'),
-        meta: { title: '商品权限', icon: 'table' }
+        meta: {
+          title: '商品权限',
+          icon: 'table'
+        }
       },
     ]
   },
@@ -94,30 +108,44 @@ export const constantRoutes = [
     path: '/product',
     component: Layout,
     name: 'product',
-    meta: { title: '商品管理', icon: 'eye' },
-    children: [
-      {
+    meta: {
+      title: '商品管理',
+      icon: 'eye'
+    },
+    children: [{
         path: 'list',
         name: 'Product',
         component: () => import('@/views/product/index'),
-        meta: { title: '商品列表', icon: 'table' }
+        meta: {
+          title: '商品列表',
+          icon: 'table'
+        }
       },
       {
         path: 'category',
         name: 'Product',
         component: () => import('@/views/product/category'),
-        meta: { title: '商品分类', icon: 'form' }
+        meta: {
+          title: '商品分类',
+          icon: 'form'
+        }
       },
       {
         path: 'paramsy',
         name: 'Product',
         component: () => import('@/views/product/params'),
-        meta: { title: '分类参数', icon: 'table' }
+        meta: {
+          title: '分类参数',
+          icon: 'table'
+        }
       },
       {
         path: 'new',
         component: () => import('@/views/product/new'),
-        meta: { title: '新增商品', icon: 'form' },
+        meta: {
+          title: '新增商品',
+          icon: 'form'
+        },
         hidden: true //不会在左侧菜单栏显示
       }
     ]
@@ -126,97 +154,122 @@ export const constantRoutes = [
     path: '/order',
     component: Layout,
     name: 'order',
-    meta: { title: '订单管理', icon: 'table' },
-    children: [
-      {
+    meta: {
+      title: '订单管理',
+      icon: 'table'
+    },
+    children: [{
         path: 'goodlist',
         name: 'order',
         component: () => import('@/views/order/goodlist'),
-        meta: { title: '发货管理', icon: 'form' }
+        meta: {
+          title: '发货管理',
+          icon: 'form'
+        }
       },
       {
         path: 'returnlist',
         name: 'order',
         component: () => import('@/views/order/returnlist'),
-        meta: { title: '退货管理', icon: 'table' }
+        meta: {
+          title: '退货管理',
+          icon: 'table'
+        }
       },
       {
         path: 'new',
         component: () => import('@/views/order/new'),
-        meta: { title: '新增商品', icon: 'table' },
-        hidden: true    //不会在菜单栏中显示
-    },
-    {
-      path: 'newnew',
-      component: () => import('@/views/order/new'),
-      meta: { title: '新增商品', icon: 'table' },
-      hidden: true    //不会在菜单栏中显示
-  }
+        meta: {
+          title: '新增商品',
+          icon: 'table'
+        },
+        hidden: true //不会在菜单栏中显示
+      },
+      {
+        path: 'newnew',
+        component: () => import('@/views/order/newnew'),
+        meta: {
+          title: '新增商品',
+          icon: 'table'
+        },
+        hidden: true //不会在菜单栏中显示
+      },
     ]
   },
   {
     path: '/data',
     component: Layout,
     name: 'data',
-    meta: { title: '数据分析', icon: 'eye' },
-    children: [
-      {
+    meta: {
+      title: '数据分析',
+      icon: 'eye'
+    },
+    children: [{
         path: 'mainwatch',
         name: 'Data',
         component: () => import('@/views/data/mainwatch'),
-        meta: { title: '主控数据', icon: 'table' }
+        meta: {
+          title: '主控数据',
+          icon: 'table'
+        }
       },
       {
         path: 'watch',
         name: 'Data',
         component: () => import('@/views/data/watch'),
-        meta: { title: '监控数据', icon: 'form' }
+        meta: {
+          title: '监控数据',
+          icon: 'form'
+        }
       }
     ]
   },
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
-]
-
-// asyncRouterMap：需要进行权限过滤的页面
-export const asyncRoutes = [
   {
-    path: '/permission',
-    component: Layout,
-    redirect: '/permission/page',
-    alwaysShow: true, // will always show the root menu
-    name: 'Permission',
-    meta: {
-      title: 'Permission',
-      icon: 'tree',
-      roles: ['admin','editor'] // you can set roles in root nav
-    },
-    children: [
-      {
-        path: 'page',
-        component: () => import('@/views/permission/page'),
-        name: 'PagePermission',
-        meta: {
-          title: 'Page Permission',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: 'directive',
-        component: () => import('@/views/permission/directive'),
-        name: 'DirectivePermission',
-        meta: {
-          title: 'Directive Permission'
-          // if do not set roles, means: this page does not require permission
-        }
-      }
-    ]
+    path: '*',
+    redirect: '/404',
+    hidden: true
   }
 ]
 
+// asyncRouterMap：需要进行权限过滤的页面
+export const asyncRoutes = [{
+  path: '/permission',
+  component: Layout,
+  redirect: '/permission/page',
+  alwaysShow: true, // will always show the root menu
+  name: 'Permission',
+  meta: {
+    title: 'Permission',
+    icon: 'tree',
+    roles: ['admin', 'editor'] // you can set roles in root nav
+  },
+  children: [{
+      path: 'page',
+      component: () => import('@/views/permission/page'),
+      name: 'PagePermission',
+      meta: {
+        title: 'Page Permission',
+        roles: ['admin'] // or you can only set roles in sub nav
+      }
+    },
+    {
+      path: 'directive',
+      component: () => import('@/views/permission/directive'),
+      name: 'DirectivePermission',
+      meta: {
+        title: 'Directive Permission'
+        // if do not set roles, means: this page does not require permission
+      }
+    }
+  ]
+}]
+
 const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({
+    y: 0
+  }),
   routes: constantRoutes
 })
 

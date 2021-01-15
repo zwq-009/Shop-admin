@@ -37,16 +37,6 @@
           <el-input v-model="ruleForm.supplier"></el-input>
         </el-col>
       </el-form-item>
-      <el-form-item label="发货状态" required prop="orderstyle">
-        <el-col :span="11">
-          <el-input v-model="ruleForm.orderstyle"></el-input>
-        </el-col>
-      </el-form-item>
-      <el-form-item label="操作人" required prop="operator">
-        <el-col :span="11">
-          <el-input v-model="ruleForm.operator"></el-input>
-        </el-col>
-      </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
         <el-button @click="resetForm('ruleForm')">重置</el-button>

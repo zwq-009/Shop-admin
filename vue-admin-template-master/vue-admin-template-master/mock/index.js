@@ -5,12 +5,14 @@ import user from './user'
 import table from './table'
 import product from './product'
 import order from './order'
+import returnlist from './returnlist'
 
 const mocks = [
   ...user,
   ...table,
   ...product,
-  ...order
+  ...order,
+  ...returnlist
 ]
 
 // for front mock
